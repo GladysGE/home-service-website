@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Add Service Details Here..</h4>
+<!--                  <p class="card-description">-->
+<!--                    Basic form layout-->
+<!--                  </p>-->
+                  <form class="forms-sample" method="post" action="{% url 'save_services' %}" enctype="multipart/form-data">
+                      {% csrf_token %}
+                   <div class="form-group">
+                    <label for="exampleFormControlSelect3">Select Category</label>
+                    <select class="form-control form-control-sm" id="exampleFormControlSelect3" name="scate">
+                      <option>Select</option>
+                      {% for d in cat %}
+                      <option>{{d.Category_Name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Service Name</label>
+                      <input type="text" class="form-control" id="exampleInputUsername1" name="sname" placeholder="Service Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Price</label>
+                      <input type="text" class="form-control"  name="price" placeholder="Price">
+                    </div>
+                      <div class="form-group">
+                      <label for="exampleInputUsername1">Discount</label>
+                      <input type="text" class="form-control" id="exampleInputUsername" name="sdiscount" placeholder="Discount">
+                    </div>
+                      <div class="form-group">
+                    <label for="exampleFormControlSelect3">Discount Type </label>
+                    <select class="form-control form-control-sm" id="exampleFormControlSelect13" name="stype">
+                      <option>Select Service Category </option>
+                      <option value="fixed">Fixed</option>
+                      <option value="percent">Percent</option>
+                    </select>
+                  </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Description</label>
+                      <textarea rows="8" class="form-control" name="sdesc" placeholder="Description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Included</label>
+                      <textarea rows="3" class="form-control" name="included" placeholder="Included"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Excluded</label>
+                      <textarea rows="3" class="form-control" name="excluded" placeholder="Excluded"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Upload service image</label><br><br>
+                        <input type="file" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <button class="btn btn-light">Cancel</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+    {% for i in messages %}
+        {% if i.tags == 'warning' %}
+            <script>
+              swal('{{i}}', '', 'warning');
+            </script>
+        {% elif i.tags == 'error' %}
+            <script>
+              swal('{{i}}', '', 'error');
+            </script>
+        {% elif i.tags == 'info' %}
+            <script>
+              swal('{{i}}', '', 'info');
+            </script>
+        {% else %}
+            <script>
+              swal('{{i}}', '', 'success');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+</body>
+</html>
+{% endblock %}

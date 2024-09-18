@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Home Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="cart-container">
+        <h1 class="page-title">Your Cart</h1>
+
+        <!-- Display messages if any -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Service Name</th>
+                    <th>Discount</th>
+                    <th>Total Price</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                    <tr id="service{{ item.id }}">
+                        <td>{{ item.Service_Name }}</td>
+                        <td>
+                            {% if item.Discount_Type == 'fixed' %}
+                                ${{ item.Discount }}
+                            {% elif item.Discount_Type == 'percent' %}
+                                 {{ item.Discount | floatformat:"2" }}%
+                            {% endif %}
+                        </td>
+                        <td>{{ item.Total_Price }}</td>
+                        <td>
+                            <a href="{% url 'delete_item' item_id=item.id %}" class="remove-item-button">Remove</a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="cart-summary">
+            <p class="summary-text">Total: <span>{{total_price}}</span></p>
+            <a href="{% url 'booking_page' %} "class="checkout-button" >Proceed to Checkout</a>
+<!--            <button class="checkout-button" onclick="{% url 'booking_page' %}">Proceed to Checkout</button>-->
+        </div>
+    </div>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.cart-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 800px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.cart-table th,
+.cart-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: left;
+}
+
+.cart-table th {
+    background-color: #f2f2f2;
+}
+
+.remove-item-button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration:none;
+}
+
+.remove-item-button:hover {
+    background-color: #c0392b;
+}
+
+.cart-summary {
+    text-align: right;
+}
+
+.summary-text {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.checkout-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+    text-decoration:none;
+    margin-right:300px;
+}
+
+.checkout-button:hover {
+    background-color: #2980b9;
+}
+
+.messages {
+    list-style-type: none;
+    padding: 0;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+</style>
+</body>
+</html>

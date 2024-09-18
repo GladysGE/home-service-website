@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Edit Service Details Here..</h4>
+<!--                  <p class="card-description">-->
+<!--                    Basic form layout-->
+<!--                  </p>-->
+                  <form class="forms-sample" method="post" action="{% url 'update_service' s_id=data.id  %}" enctype="multipart/form-data">
+                      {% csrf_token %}
+                   <div class="form-group">
+                    <label for="exampleFormControlSelect3">Select Category</label>
+                    <select class="form-control form-control-sm" id="exampleFormControlSelect3" name="scate">
+                      <option>{{data.Category}}</option>
+                      {% for d in cat %}
+                      <option>{{d.Category_Name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Service Name</label>
+                      <input type="text" class="form-control" id="exampleInputUsername1" name="sname" value="{{data.Service_Name}}" placeholder="Service Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Price</label>
+                      <input type="text" class="form-control"  name="price" placeholder="Price" value="{{data.Price}}">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Discount</label>
+                      <input type="text" class="form-control" id="exampleInputUsernae1" name="sdiscount" value="{{data.Discount}}" placeholder="Discount">
+                    </div>
+                      <div class="form-group">
+                    <label for="exampleFormControlSelect3">Discount Type </label>
+                    <select class="form-control form-control-sm" id="exampleFormControlSelect13" name="stype">
+                      <option>{{data.Discount_Type}}</option>
+                      <option value="fixed">Fixed</option>
+                      <option value="percent">Percent</option>
+                    </select>
+                  </div>
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Description</label>
+                      <textarea rows="8" class="form-control" name="sdesc" placeholder="Description">{{data.Description}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Included</label>
+                      <textarea rows="3" class="form-control" name="included" placeholder="Included">{{data.Included}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Excluded</label>
+                      <textarea rows="3" class="form-control" name="excluded" placeholder="Excluded">{{data.Excluded}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">Upload service image</label><br><br>
+                        <img src="{{data.Service_Image.url}}" width="100px" height="100px"><br>
+                        <input type="file" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                    <button class="btn btn-light">Cancel</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+</body>
+</html>
+{% endblock %}

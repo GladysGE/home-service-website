@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Time & Date for Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="booking-container">
+        <h1>Schedule Time & Date for Service</h1>
+        <p>Choose a day and time for the service you're booking</p>
+
+        <form id="booking-form" action="{% url 'booking_save' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+             <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="uname" value="{{request.session.Username}}" readonly>
+            </div>
+
+            <!-- Phone Number Field -->
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <div class="date-buttons">
+                    <button type="button" onclick="setDate('today')">Today</button>
+                    <button type="button" onclick="setDate('tomorrow')">Tomorrow</button>
+                    <input type="date" id="date" name="date">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Time:</label>
+                <div class="time-select">
+                    <select id="hours" name="hours">
+                        <!-- Options generated dynamically -->
+                    </select> :
+                    <select id="minutes" name="minutes">
+                        <!-- Options generated dynamically -->
+                    </select>
+                    <select id="ampm" name="ampm">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Address:</label>
+                <textarea id="address" name="address" rows="4" placeholder="Address"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="complaint-image">Add Complaint Image:</label>
+                <input type="file" id="complaint-image" name="complaint-image" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Add Description:</label>
+                <textarea id="description" name="description" rows="4" placeholder="Describe your issue..."></textarea>
+            </div>
+
+             <div class="base-price-details">
+                <h2>Base Price Details</h2>
+                <p>Total Amount: <span id="total-amount">${{total_price}}</span></p>
+                <input type="hidden" id="total-price" name="total_price" value="{{total_price}}" readonly>
+            </div>
+
+            <button type="submit" class="confirm-button">Confirm</button><br><br>
+<!--            <a href="{% url 'payment_page' %}" class="pay-button">Pay Now</a>-->
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p>Slots available only between 8 AM to 8 PM</p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+
+        function setMinDate() {
+            const dateInput = document.getElementById('date');
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const dd = String(today.getDate()).padStart(2, '0');
+            const minDate = `${yyyy}-${mm}-${dd}`;
+            dateInput.setAttribute('min', minDate);
+        }
+
+        function setDate(day) {
+            const dateInput = document.getElementById('date');
+            const today = new Date();
+            if (day === 'today') {
+                dateInput.valueAsDate = today;
+            } else if (day === 'tomorrow') {
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                dateInput.valueAsDate = tomorrow;
+            }
+        }
+
+        function validateTime() {
+            const hours = parseInt(document.getElementById('hours').value);
+            const minutes = parseInt(document.getElementById('minutes').value);
+            const ampm = document.getElementById('ampm').value;
+
+            let totalHours = hours;
+
+            if (ampm === 'PM' && hours !== 12) {
+                totalHours += 12;
+            } else if (ampm === 'AM' && hours === 12) {
+                totalHours = 0;
+            }
+
+            // Check if the selected time is before 8 AM or after 8 PM
+            if (totalHours < 8 || (totalHours >= 20 && minutes > 0)) {
+                openModal();
+                return false;
+            } else {
+                closeModal();
+                return true;
+            }
+        }
+
+        function openModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        function generateHourOptions() {
+            const options = [];
+            for (let i = 1; i <= 12; i++) {
+                options.push(`<option value="${String(i).padStart(2, '0')}">${String(i).padStart(2, '0')}</option>`);
+            }
+            return options.join('');
+        }
+
+        function generateMinuteOptions() {
+            const options = [];
+            for (let i = 0; i < 60; i++) {
+                options.push(`<option value="${String(i).padStart(2, '0')}">${String(i).padStart(2, '0')}</option>`);
+            }
+            return options.join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setMinDate();
+            document.getElementById('hours').innerHTML = generateHourOptions();
+            document.getElementById('minutes').innerHTML = generateMinuteOptions();
+            setInitialTime();
+        });
+
+        function setInitialTime() {
+            const now = new Date();
+            const hoursSelect = document.getElementById('hours');
+            const minutesSelect = document.getElementById('minutes');
+            const ampmSelect = document.getElementById('ampm');
+
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let ampm = 'AM';
+
+            if (hours >= 12) {
+                ampm = 'PM';
+                if (hours > 12) {
+                    hours -= 12;
+                }
+            }
+            if (hours === 0) {
+                hours = 12;
+            }
+
+            hoursSelect.value = String(hours).padStart(2, '0');
+            minutesSelect.value = String(minutes).padStart(2, '0');
+            ampmSelect.value = ampm;
+        }
+
+        document.getElementById('booking-form').addEventListener('submit', function(event) {
+            if (!validateTime()) {
+                event.preventDefault(); // Prevent form submission if the time is not valid
+            }
+        });
+    </script>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    background-image:url('images/bg_1.jpg');
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    height:100px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.booking-container {
+    background-color: #fff;
+    padding: 50px;
+    margin-top:350px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 10px 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.date-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date-buttons button {
+    padding: 5px 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.date-buttons button:hover {
+    background-color: #f0f0f0;
+}
+
+input[type="date"], select, input[type="file"], textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.time-select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time-select select {
+    width: 30%;
+}
+
+.base-price-details {
+    margin-top: 20px;
+}
+
+.base-price-details h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.base-price-details p {
+    margin: 5px 0;
+}
+
+.confirm-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #2b98f0;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-decoration:none;
+
+
+}
+
+.confirm-button:hover {
+    background-color: #80c6ff;
+}
+.pay-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-decoration:none;
+    margin-left:150px;
+
+
+}
+ .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4); /* Semi-transparent background */
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto; /* Center modal vertically with some space from top */
+        padding: 15px; /* Reduce padding */
+        border: 1px solid #888;
+        width: 50%; /* Reduce width to make modal smaller */
+        max-width: 400px; /* Optional: Set a maximum width */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Optional: Add shadow for better visibility */
+    }
+
+    .confirm-button {
+        margin-top: 10px; /* Adjust margin for better spacing */
+    }
+    .modal-content button:hover {
+            background-color: #81c0f3;
+        }
+    .modal-content button {
+             padding: 10px 20px;
+             background-color: #2b98f0;
+             color: #fff;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+        }
+         .modal-content p {
+          margin-bottom: 20px;
+        }
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+input[type="file"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+</style>
+</body>
+</html>

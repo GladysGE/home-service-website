@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <title>Single Servi</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{% static 'home/css/animate.css' %}">
+
+    <link rel="stylesheet" href="{% static 'home/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/magnific-popup.css' %}">
+
+    <link rel="stylesheet" href="{% static 'home/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+      <style>
+
+           .product-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 500px;
+    text-align: center;
+    margin-left:300px;
+}
+
+.product-image {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.service-name {
+    font-size: 24px;
+    margin: 10px 0;
+    text-align:left;
+}
+
+.price {
+    font-size: 20px;
+    color: #e74c3c;
+    text-align:left;
+}
+
+.description {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin: 10px 0;
+    text-align:left;
+}
+
+.details h3 {
+    font-size: 18px;
+    margin: 10px 0 5px;
+    text-align:left;
+}
+
+.details ul {
+    list-style-type: none;
+    padding: 0;
+    text-align:left;
+}
+
+.details li {
+    font-size: 14px;
+    color: #34495e;
+    margin: 5px 0;
+    text-align:left;
+}
+
+.discount {
+    font-size: 18px;
+    color: #27ae60;
+    margin: 10px 0;
+
+}
+
+.total-price {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+.add-cart-button, .book-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin: 10px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: calc(50% - 12px);
+}
+
+.add-cart-button:hover, .book-button:hover {
+    background-color: #2980b9;
+
+}
+      </style>
+  </head>
+  <body>
+  	<div class="wrap">
+			<div class="container">
+				<div class="row justify-content-between">
+						<div class="col-12 col-md d-flex align-items-center">
+							<p class="mb-0 phone"><span class="mailus">Phone no:</span> <a href="#">+00 1234 567</a> or <span class="mailus">email us:</span> <a href="#">homecarepros@email.com</a></p>
+						</div>
+						<div class="col-12 col-md d-flex justify-content-md-end">
+							<div class="social-media">
+				    		<p class="mb-0 d-flex">
+				    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+				    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+				    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+				    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+				    		</p>
+			        </div>
+						</div>
+				</div>
+			</div>
+		</div>
+		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	    	<a class="navbar-brand" href="index.html">HomeCare<span>Pro</span></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="fa fa-bars"></span> Menu
+	      </button>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	        	<li class="nav-item "><a href="{% url 'home_page' %}" class="nav-link">Home</a></li>
+	        	<li class="nav-item"><a href="{% url 'about_page' %}" class="nav-link">About</a></li>
+				<li class="nav-item active"><a href="{% url 'our_services' %}" class="nav-link">Services</a></li>
+	        	<li class="nav-item"><a href="{% url 'portfolio_page' %}" class="nav-link">Portfolio</a></li>
+<!--	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>-->
+	          <li class="nav-item"><a href="{% url 'contact_page' %}" class="nav-link">Contact</a></li>
+				{% if request.session.Username %}
+				<li class="nav-item"><a href="{% url 'user_logout' %}" class="nav-link">Welcome {{request.session.Username}}/Logout</a></li>
+				{% else %}
+				<li><a href="{% url 'registration_page' %}" style="color:white"><i class="fas fa-sign-in-alt" style="margin-top:34px; margin-left:40px; color:white"></i> Login </a></li>
+<!--					<a href="{% url 'registration_page' %}" class="btn btn-outline-primary" style="height:40px; width:100px; margin-top:30px;">-->
+
+				<li>
+				<a href="{% url 'user_login' %}" style="color:white"><i class="fas fa-user-plus" style="margin-top:34px; margin-left:40px; color:white"></i> Sign Up</a>
+				</li>
+				<li><a href="#" class="cart-icon">
+                <img src="cart-icon.png" alt="Cart">
+                <span class="cart-count">3</span>
+            </a></li>
+
+				{% endif %}
+
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+    <section class="hero-wrap hero-wrap-2" style="background-image: url({% static 'home/images/bg_2.jpg' %});" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-end">
+          <div class="col-md-9 ftco-animate pb-5">
+          	<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>Single Services <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-0 bread">{{data.Service_Name}}: {{data.Category}}</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+		<section class="ftco-section">
+  <div class="product-container">
+        <img src="{{data.Service_Image.url}}" alt="Service Image" class="product-image">
+        <h1 class="service-name">{{data.Service_Name}}</h1>
+        <p class="price">Price Rs.{{data.Price}}</p>
+      {% if data.Discount_Type == 'fixed' %}
+        <p class="price">Discount :{{data.Discount}}</p>
+      {% elif data.Discount_Type == 'percent' %}
+        <p class="price">Discount :{{data.Discount | floatformat:"2"}}%</p>
+      {% endif %}
+        <p class="description">{{data.Description}}</p>
+        <div class="details">
+            <h3>Inclusions</h3>
+            <ul class="inclusion">
+                 {% for inclusion in inclusions %}
+                <li>{{inclusion}}</li>
+                 {% endfor %}
+            </ul>
+            <h3>Exclusions</h3>
+            <ul class="exclusion">
+                 {% for exclusion in exclusions %}
+                <li>{{exclusion}}</li>
+                 {% endfor %}
+            </ul>
+        </div>
+
+
+        <input type="hidden" id="price" class="price" value="{{data.Price}}" readonly>
+        <select id="discount-type" class="discount-type" style="display: none;">
+            <option>{{data.Discount_Type}}</option>
+            <option value="percent">Percent</option>
+            <option value="fixed">Fixed</option>
+        </select>
+        <div>
+            <form method="post" action="{% url 'save_cart' %}">
+                {% csrf_token %}
+        <select id="discount-type" class="discount-type" style="display: none;" name="stype">
+            <option>{{data.Discount_Type}}</option>
+            <option value="percent">Percent</option>
+            <option value="fixed">Fixed</option>
+        </select>
+        <input type="hidden" id="discount" name="discount" class="discount" value="{{data.Discount}}" readonly>
+
+        <label for="total-price">Total Price: </label>
+        <input type="text" id="total-price" class="total-price" name="totalprice" placeholder="Total Price" readonly>
+        <input type="hidden" value="{{data.Service_Name}}" name="sname" readonly>
+        <input type="hidden" value="{{request.session.Username}}" name="uname" readonly>
+        <input type="submit" class="btn btn-primary" class="add-cart-button" onclick="calculateTotalPrice()" value="Add to Cart" >
+
+                </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+      function calculateTotalPrice() {
+            let price = parseInt(document.getElementById('price').value);
+            let discount = parseInt(document.getElementById('discount').value) || 0;
+            let discountType = document.getElementById('discount-type').value;
+            let totalPrice = price;
+
+            if (discountType === 'fixed') {
+                totalPrice = price - discount;
+            } else if (discountType === 'percent') {
+                totalPrice = price - (price * discount / 100);
+            }
+
+            document.getElementById('total-price').value = totalPrice.toFixed(2);
+        }
+
+        // Initial calculation on page load
+        window.onload = calculateTotalPrice;
+    </script>
+
+
+
+
+		</section>
+
+    <footer class="footer ftco-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-lg-3 mb-4 mb-md-0">
+						<h2 class="footer-heading">HomeCare Pros</h2>
+						<p>At HomeCare Pros, we offer expert home repair and maintenance services. Our skilled technicians are dedicated to providing reliable and efficient solutions for all your home needs. Trust us for exceptional service and customer satisfaction.</p>
+						<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-4">
+              <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+              <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+              <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+            </ul>
+					</div>
+					<div class="col-md-6 col-lg-3 mb-4 mb-md-0">
+						<h2 class="footer-heading">Latest News</h2>
+						<div class="block-21 mb-4 d-flex">
+              <a class="img mr-4 rounded" style="background-image: url({% static 'home/images/image_1.jpg' %});"></a>
+              <div class="text">
+                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a></h3>
+                <div class="meta">
+                  <div><a href="#"><span class="icon-calendar"></span> Mar. 04, 2020</a></div>
+                  <div><a href="#"><span class="icon-person"></span> Admin</a></div>
+                  <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="block-21 mb-4 d-flex">
+              <a class="img mr-4 rounded" style="background-image: url({% static 'home/images/image_2.jpg' %});"></a>
+              <div class="text">
+                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about</a></h3>
+                <div class="meta">
+                  <div><a href="#"><span class="icon-calendar"></span> Mar. 04, 2020</a></div>
+                  <div><a href="#"><span class="icon-person"></span> Admin</a></div>
+                  <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                </div>
+              </div>
+            </div>
+					</div>
+					<div class="col-md-6 col-lg-3 pl-lg-5 mb-4 mb-md-0">
+						<h2 class="footer-heading">Quick Links</h2>
+						<ul class="list-unstyled">
+              <li><a href="{% url 'home_page' %}" class="py-1 d-block">Home</a></li>
+              <li><a href="{% url 'about_page' %}" class="py-1 d-block">About</a></li>
+              <li><a href="{% url 'our_services' %}" class="py-1 d-block">Services</a></li>
+              <li><a href="{% url 'portfolio_page' %}" class="py-1 d-block">Works</a></li>
+              <li><a href="{% url 'blog_page' %}" class="py-1 d-block">Blog</a></li>
+              <li><a href="{% url 'contact_page' %}" class="py-1 d-block">Contact</a></li>
+            </ul>
+					</div>
+					<div class="col-md-6 col-lg-3 mb-4 mb-md-0">
+						<h2 class="footer-heading">Have a Questions?</h2>
+						<div class="block-23 mb-3">
+              <ul>
+                <li><span class="icon fa fa-map-marker"></span><span class="text">ABC Fake St. Mountain View, San Francisco, Kerala</span></li>
+                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+                <li><a href="#"><span class="icon fa fa-paper-plane"></span><span class="text">homecarepro@yourdomain.com</span></a></li>
+              </ul>
+            </div>
+					</div>
+				</div>
+				<div class="row mt-5">
+          <div class="col-md-12 text-center">
+
+            <p class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="#" target="_blank">HomeCarePros.com</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+			</div>
+		</footer>
+
+
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="{% static 'home/js/jquery.min.js' %}"></script>
+  <script src="{% static 'home/js/jquery-migrate-3.0.1.min.js' %}"></script>
+  <script src="{% static 'home/js/popper.min.js' %}"></script>
+  <script src="{% static 'home/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'home/js/jquery.easing.1.3.js' %}"></script>
+  <script src="{% static 'home/js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'home/js/jquery.stellar.min.js' %}"></script>
+  <script src="{% static 'home/js/jquery.animateNumber.min.js' %}"></script>
+  <script src="{% static 'home/js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'home/js/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'home/js/scrollax.min.js' %}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="{% static 'home/js/google-map.js' %}"></script>
+  <script src="{% static 'home/js/main.js' %}"></script>
+
+  </body>
+</html>

@@ -1,0 +1,33 @@
+from django.urls import path
+from MainApp import views
+urlpatterns=[
+    path('index/',views.index_page,name="index"),
+    path('add_category/', views.add_category, name="add_category"),
+    path('save_category/', views.save_category, name="save_category"),
+    path('display_category/', views.display_category, name="display_category"),
+    path('edit_category/<int:c_id>/', views.edit_category, name="edit_category"),
+    path('update_category/<int:cid>/', views.update_category, name="update_category"),
+    path('delete_category/<int:c_id>/', views.delete_category, name="delete_category"),
+    path('login_page/', views.login_page, name="login_page"),
+    path('admin_login/', views.admin_login, name="admin_login"),
+    path('admin_logout/', views.admin_logout, name="admin_logout"),
+    path('add_services/', views.add_services, name="add_services"),
+    path('save_services/', views.save_services, name="save_services"),
+    path('display_services/', views.display_services, name="display_services"),
+    path('edit_service/<int:sid>/', views.edit_service, name="edit_service"),
+    path('update_service/<int:s_id>/', views.update_service, name="update_service"),
+    path('delete_service/<int:sid>/', views.delete_service, name="delete_service"),
+    path('display_contact/', views.display_contact, name="display_contact"),
+    path('display_contact/', views.display_contact, name="display_contact"),
+    path('service_type_page/', views.service_type_page, name="service_type_page"),
+    path('save_service_type/', views.save_service_type, name="save_service_type"),
+    path('display_service_type/', views.display_service_type, name="display_service_type"),
+    path('add_state/', views.add_state, name="add_state"),
+    path('save_state/', views.save_state, name="save_state"),
+    path('add_city/', views.add_city, name="add_city"),
+    path('save_city/', views.save_city, name="save_city"),
+    path('service/', views.service, name="service"),
+    path('submit_service/', views.submit_service, name="submit_service"),
+    path('display_booking/', views.display_booking, name="display_booking"),
+
+]
